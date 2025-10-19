@@ -1,0 +1,212 @@
+.container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 80px;
+  position: relative;
+}
+
+.progressBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #e0e0e0;
+  z-index: 1001;
+}
+
+.progressFill {
+  height: 100%;
+  background: #4caf50;
+  transition: width 0.3s ease;
+}
+
+.main {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #212121;
+  margin: 0;
+}
+
+.helpButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: #757575;
+  transition: color 0.2s ease;
+}
+
+.helpButton:hover {
+  color: #4caf50;
+}
+
+.helpIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.uploadSection {
+  margin-bottom: 32px;
+  transition: opacity 0.3s ease;
+}
+
+.uploadSection.dimmed {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  background: #ffffff;
+  border: 2px dashed #bdbdbd;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.uploadArea:hover {
+  border-color: #4caf50;
+  background: #f9fff9;
+}
+
+.cameraIcon {
+  width: 64px;
+  height: 64px;
+  color: #bdbdbd;
+  margin-bottom: 16px;
+}
+
+.uploadText {
+  font-size: 16px;
+  font-weight: 600;
+  color: #212121;
+  margin: 0 0 8px 0;
+}
+
+.uploadSubText {
+  font-size: 14px;
+  color: #757575;
+  margin: 0;
+}
+
+.fileInput {
+  display: none;
+}
+
+.analyzingOverlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  z-index: 1000;
+}
+
+.spinner {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cookingIcon {
+  width: 100%;
+  height: 100%;
+  color: #4caf50;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.analyzingText {
+  font-size: 16px;
+  font-weight: 600;
+  color: #212121;
+  margin: 0;
+}
+
+.usageSection {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.usageTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #212121;
+  margin: 0 0 16px 0;
+}
+
+.usageSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.usageStep {
+  display: flex;
+  gap: 16px;
+}
+
+.stepNumber {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #4caf50;
+  color: #ffffff;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.stepContent {
+  flex: 1;
+}
+
+.stepTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #212121;
+  margin: 0 0 4px 0;
+}
+
+.stepDescription {
+  font-size: 14px;
+  color: #757575;
+  margin: 0;
+  line-height: 1.5;
+}

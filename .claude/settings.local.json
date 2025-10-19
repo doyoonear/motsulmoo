@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/doyoonlee/Documents/screenshot/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

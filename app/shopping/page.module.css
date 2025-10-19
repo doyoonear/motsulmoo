@@ -1,0 +1,238 @@
+.container {
+  min-height: 100vh;
+  background: #ffffff;
+  padding-bottom: 80px;
+}
+
+.main {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #212121;
+  margin: 0;
+}
+
+.shareButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shareIcon {
+  width: 24px;
+  height: 24px;
+  color: #212121;
+}
+
+.section {
+  margin-bottom: 28px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #212121;
+  margin: 0 0 12px 0;
+}
+
+.shoppingCart {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.cartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.cartDescription {
+  font-size: 16px;
+  color: #212121;
+  font-weight: 600;
+  margin: 0;
+}
+
+.cartBadge {
+  font-size: 14px;
+  color: #4caf50;
+  font-weight: 600;
+}
+
+.ingredientTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.ingredientTag {
+  padding: 8px 16px;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #212121;
+}
+
+.saveCartButton {
+  width: 100%;
+  padding: 14px;
+  background: #4caf50;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.saveCartButton:hover {
+  background: #45a049;
+}
+
+.cartIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dayCard {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.dayHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #fafafa;
+}
+
+.dayLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dayOfWeek {
+  font-size: 16px;
+  font-weight: 700;
+  color: #212121;
+}
+
+.date {
+  font-size: 13px;
+  color: #757575;
+}
+
+.changeButton {
+  background: none;
+  border: 1px solid #4caf50;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4caf50;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.changeButton:hover {
+  background: #e8f5e9;
+}
+
+.recipeCard {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border: 2px solid #e8f5e9;
+  border-radius: 8px;
+  margin: 12px;
+  background: #f9fff9;
+}
+
+.recipeIcon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  background: #4caf50;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.recipeContent {
+  flex: 1;
+}
+
+.recipeName {
+  font-size: 16px;
+  font-weight: 700;
+  color: #212121;
+  margin: 0 0 8px 0;
+}
+
+.missingInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.missingLabel {
+  font-size: 12px;
+  color: #757575;
+  font-weight: 600;
+}
+
+.missingTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.missingTag {
+  display: inline-block;
+  padding: 4px 10px;
+  background: #ffffff;
+  border: 1px solid #ffccbc;
+  color: #ff5722;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}

@@ -1,0 +1,77 @@
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #ffffff;
+  border-top: 1px solid #e0e0e0;
+  padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+  z-index: 1000;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+  color: #757575;
+}
+
+.navItem:hover {
+  opacity: 0.7;
+}
+
+.navItem.active {
+  color: #4caf50;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.addButton {
+  position: relative;
+}
+
+.addIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: #4caf50;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+  transition: all 0.2s ease;
+}
+
+.addButton:hover .addIconWrapper {
+  background: #45a049;
+  transform: scale(1.05);
+}
+
+.addIcon {
+  width: 28px;
+  height: 28px;
+  stroke: #ffffff;
+  stroke-width: 2.5;
+}
+
+.addButton .label {
+  color: #757575;
+}
