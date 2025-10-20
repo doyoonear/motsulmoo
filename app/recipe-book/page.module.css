@@ -47,7 +47,7 @@
 
 .searchInput:focus {
   outline: none;
-  border-color: #4caf50;
+  border-color: var(--color-primary);
 }
 
 .clearButton {

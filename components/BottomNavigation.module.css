@@ -31,7 +31,7 @@
 }
 
 .navItem.active {
-  color: #4caf50;
+  color: var(--color-primary);
 }
 
 .icon {
@@ -44,34 +44,37 @@
   font-weight: 500;
 }
 
-.addButton {
-  position: relative;
-}
-
-.addIconWrapper {
+.floatingAddButton {
+  position: fixed;
+  bottom: calc(80px + env(safe-area-inset-bottom));
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
-  background: #4caf50;
-  border-radius: 50%;
-  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
   transition: all 0.2s ease;
+  z-index: 999;
 }
 
-.addButton:hover .addIconWrapper {
-  background: #45a049;
+.floatingAddButton:hover {
+  background: var(--color-primary-dark);
   transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.5);
 }
 
-.addIcon {
+.floatingAddButton:active {
+  transform: scale(0.95);
+}
+
+.floatingIcon {
   width: 28px;
   height: 28px;
   stroke: #ffffff;
   stroke-width: 2.5;
-}
-
-.addButton .label {
-  color: #757575;
 }

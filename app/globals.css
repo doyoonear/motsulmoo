@@ -1,6 +1,13 @@
 :root {
   --background: #f5f5f5;
   --foreground: #212121;
+  --color-primary: rgb(109, 174, 181);
+  --color-primary-dark: rgb(105, 175, 183);
+  --color-secondary: #FF9800;
+  --color-text-primary: #212121;
+  --color-text-secondary: #757575;
+  --color-border: #E0E0E0;
+  --color-surface: #F5F5F5;
 }
 
 html,

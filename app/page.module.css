@@ -49,7 +49,7 @@
 .shoppingDay {
   font-size: 14px;
   font-weight: 600;
-  color: #4caf50;
+  color: var(--color-primary);
   margin-bottom: 4px;
 }
 

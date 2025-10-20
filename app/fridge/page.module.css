@@ -71,14 +71,14 @@
 }
 
 .categoryButton.active {
-  background: #4caf50;
+  background: var(--color-primary);
   color: #ffffff;
 }
 
 .addButton {
   width: 100%;
   padding: 14px;
-  background: #4caf50;
+  background: var(--color-primary);
   border: none;
   border-radius: 8px;
   font-size: 16px;
@@ -90,7 +90,7 @@
 }
 
 .addButton:hover {
-  background: #45a049;
+  background: var(--color-primary-dark);
 }
 
 .itemsList {
@@ -242,7 +242,7 @@
 }
 
 .uploadArea:hover {
-  border-color: #4caf50;
+  border-color: var(--color-primary);
   background: #f9fff9;
 }
 
@@ -294,7 +294,7 @@
 .input:focus,
 .select:focus {
   outline: none;
-  border-color: #4caf50;
+  border-color: var(--color-primary);
 }
 
 .modalActions {
@@ -325,10 +325,10 @@
 }
 
 .submitButton {
-  background: #4caf50;
+  background: var(--color-primary);
   color: #ffffff;
 }
 
 .submitButton:hover {
-  background: #45a049;
+  background: var(--color-primary-dark);
 }

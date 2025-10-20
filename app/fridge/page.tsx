@@ -4,24 +4,24 @@ import { useState } from 'react';
 import styles from './page.module.css';
 import BottomNavigation from '@/components/BottomNavigation';
 import { FridgeItem, IngredientCategory } from '@/types';
-import { INGREDIENT_CATEGORIES } from '@/constants';
+import { INGREDIENT_CATEGORIES, COLORS } from '@/constants';
 
 // 카테고리별 아이콘 색상 매핑
 const getCategoryColor = (category: IngredientCategory | 'all'): string => {
   const colorMap: Record<string, string> = {
-    전체: '#4CAF50',
-    채소류: '#8BC34A',
+    전체: COLORS.PRIMARY,
+    채소류: '#94c35f',
     육류: '#FF7043',
     해산물: '#29B6F6',
     버섯류: '#A1887F',
     '달걀·가공단백류': '#FFB74D',
     '곡물·면류': '#FFD54F',
-    유제품: '#90CAF9',
+    유제품: '#a6c5c8',
     가공식품: '#FFAB91',
-    '조미료·양념류': '#EF5350',
+    '양념·소스': '#83745e',
     '기타·간식류': '#BA68C8',
   };
-  return colorMap[category] || '#4CAF50';
+  return colorMap[category] || COLORS.PRIMARY;
 };
 
 // Mock 데이터

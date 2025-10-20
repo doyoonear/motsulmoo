@@ -1,7 +1,7 @@
 // 색상 상수
 export const COLORS = {
-  PRIMARY: '#4CAF50',
-  PRIMARY_DARK: '#45a049',
+  PRIMARY: 'rgb(109, 174, 181)',
+  PRIMARY_DARK: 'rgb(105, 175, 183)',
   SECONDARY: '#FF9800',
   BACKGROUND: '#FFFFFF',
   SURFACE: '#F5F5F5',
@@ -13,7 +13,6 @@ export const COLORS = {
   SUCCESS: '#4CAF50',
   WARNING: '#FFC107',
   DIMMED: 'rgba(0, 0, 0, 0.5)',
-  PROGRESS_BAR: '#4CAF50',
 } as const;
 
 // 재료 카테고리
