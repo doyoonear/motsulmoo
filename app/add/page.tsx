@@ -11,33 +11,64 @@ export default function AddRecipePage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // TODO: 실제 이미지 업로드 및 분석 API 호출
-    console.log('이미지 업로드:', file.name);
-
-    // 분석 시작
     setIsAnalyzing(true);
     setUploadProgress(0);
 
-    // Mock 진행 상황
-    const interval = setInterval(() => {
+    // 진행률 애니메이션
+    const progressInterval = setInterval(() => {
       setUploadProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          // TODO: 분석 완료 시 토스트 표시 및 레시피 상세 페이지로 이동
-          setTimeout(() => {
-            setIsAnalyzing(false);
-            alert(`${TOAST_MESSAGES.RECIPE_ANALYSIS_COMPLETE}`);
-            // router.push('/recipe-book/new-recipe-id');
-          }, 500);
-          return 100;
+        if (prev >= 90) {
+          clearInterval(progressInterval);
+          return 90;
         }
         return prev + 10;
       });
     }, 300);
+
+    try {
+      // FormData 생성
+      const formData = new FormData();
+      formData.append('image', file);
+
+      // API 호출
+      const response = await fetch('/api/analyze-recipe', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || '레시피 분석에 실패했습니다.');
+      }
+
+      if (data.success && data.recipe) {
+        setUploadProgress(100);
+
+        // 분석 완료 후 처리
+        setTimeout(() => {
+          setIsAnalyzing(false);
+          alert(TOAST_MESSAGES.RECIPE_ANALYSIS_COMPLETE);
+
+          // TODO: 레시피 저장 API 호출 및 상세 페이지로 이동
+          console.log('분석된 레시피:', data.recipe);
+          // router.push(`/recipe-book/${data.recipe.id}`);
+        }, 500);
+      } else {
+        alert('레시피 정보를 추출할 수 없습니다. 다른 이미지를 시도해주세요.');
+        setIsAnalyzing(false);
+      }
+    } catch (error) {
+      clearInterval(progressInterval);
+      console.error('레시피 분석 오류:', error);
+      alert(error instanceof Error ? error.message : '레시피 분석 중 오류가 발생했습니다.');
+      setIsAnalyzing(false);
+      setUploadProgress(0);
+    }
   };
 
   return (
