@@ -77,19 +77,58 @@ export default function FridgePage() {
   const [selectedCategory, setSelectedCategory] = useState<IngredientCategory | 'all'>('all');
   const [showAddModal, setShowAddModal] = useState(false);
   const [showImageUpload, setShowImageUpload] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [newItemName, setNewItemName] = useState('');
   const [newItemAmount, setNewItemAmount] = useState('');
   const [newItemUnit, setNewItemUnit] = useState<'g' | 'ml'>('g');
   const [newItemCategory, setNewItemCategory] = useState<IngredientCategory>('채소류');
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // TODO: 구매 내역 이미지 분석 및 냉장고 재료 업데이트 API 호출
-    console.log('구매 내역 이미지 업로드:', file.name);
-    alert('이미지를 분석하여 냉장고에 재료를 추가합니다.');
-    setShowImageUpload(false);
+    setIsAnalyzing(true);
+
+    try {
+      // FormData 생성
+      const formData = new FormData();
+      formData.append('image', file);
+
+      // API 호출
+      const response = await fetch('/api/analyze-receipt', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || '이미지 분석에 실패했습니다.');
+      }
+
+      if (data.success && data.ingredients && data.ingredients.length > 0) {
+        // 분석된 재료를 냉장고에 추가
+        const newItems: FridgeItem[] = data.ingredients.map((ingredient: any) => ({
+          id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+          name: ingredient.name,
+          category: ingredient.category as IngredientCategory,
+          amount: ingredient.amount,
+          unit: ingredient.unit as 'g' | 'ml',
+          purchasedAt: new Date(),
+        }));
+
+        setFridgeItems([...fridgeItems, ...newItems]);
+        alert(`${newItems.length}개의 재료가 냉장고에 추가되었습니다!`);
+        setShowImageUpload(false);
+      } else {
+        alert('이미지에서 식재료를 찾을 수 없습니다. 다른 이미지를 시도해주세요.');
+      }
+    } catch (error) {
+      console.error('이미지 분석 오류:', error);
+      alert(error instanceof Error ? error.message : '이미지 분석 중 오류가 발생했습니다.');
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const handleAddItem = () => {
@@ -228,27 +267,36 @@ export default function FridgePage() {
 
       {showImageUpload && (
         <>
-          <div className={styles.dimmed} onClick={() => setShowImageUpload(false)} />
+          <div className={styles.dimmed} onClick={() => !isAnalyzing && setShowImageUpload(false)} />
           <div className={styles.modal}>
             <h3 className={styles.modalTitle}>구매 내역 업로드</h3>
-            <label htmlFor="receiptUpload" className={styles.uploadArea}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className={styles.uploadIcon}>
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" strokeWidth="2" />
-                <polyline points="17 8 12 3 7 8" strokeWidth="2" />
-                <line x1="12" y1="3" x2="12" y2="15" strokeWidth="2" />
-              </svg>
-              <p className={styles.uploadText}>구매 내역 이미지를 업로드하세요</p>
-            </label>
-            <input
-              id="receiptUpload"
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className={styles.fileInput}
-            />
-            <button className={styles.cancelButton} onClick={() => setShowImageUpload(false)}>
-              취소
-            </button>
+            {isAnalyzing ? (
+              <div className={styles.analyzingContainer}>
+                <div className={styles.spinner} />
+                <p className={styles.analyzingText}>이미지를 분석하고 있습니다...</p>
+              </div>
+            ) : (
+              <>
+                <label htmlFor="receiptUpload" className={styles.uploadArea}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className={styles.uploadIcon}>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" strokeWidth="2" />
+                    <polyline points="17 8 12 3 7 8" strokeWidth="2" />
+                    <line x1="12" y1="3" x2="12" y2="15" strokeWidth="2" />
+                  </svg>
+                  <p className={styles.uploadText}>구매 내역 이미지를 업로드하세요</p>
+                </label>
+                <input
+                  id="receiptUpload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className={styles.fileInput}
+                />
+                <button className={styles.cancelButton} onClick={() => setShowImageUpload(false)}>
+                  취소
+                </button>
+              </>
+            )}
           </div>
         </>
       )}
