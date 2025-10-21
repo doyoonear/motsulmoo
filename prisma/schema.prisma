@@ -4,7 +4,7 @@
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  // directUrl 제거: Supabase Direct Connection이 IPv6 전용이므로 Transaction Pooler만 사용
 }
 
 // Prisma Client 생성 설정
