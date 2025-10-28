@@ -23,6 +23,7 @@ export default function ReceiptImageGallery(props: ReceiptImageGalleryProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   // 구매내역 조회
   const { data, isLoading, error } = useQuery({
@@ -38,6 +39,37 @@ export default function ReceiptImageGallery(props: ReceiptImageGalleryProps) {
   });
 
   const receiptImages = data || [];
+
+  const handleDelete = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // 이미지 클릭 이벤트 방지
+
+    if (!confirm('구매내역을 삭제하시겠습니까?')) {
+      return;
+    }
+
+    setDeletingId(id);
+
+    try {
+      const response = await fetch(`/api/purchase-receipts/${id}`, {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || '삭제에 실패했습니다.');
+      }
+
+      // Query 캐시 무효화하여 재조회
+      queryClient.invalidateQueries({ queryKey: ['purchase-receipts'] });
+      alert('구매내역이 삭제되었습니다.');
+    } catch (error) {
+      console.error('삭제 오류:', error);
+      alert(error instanceof Error ? error.message : '삭제 중 오류가 발생했습니다.');
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -115,6 +147,31 @@ export default function ReceiptImageGallery(props: ReceiptImageGalleryProps) {
                 className={styles.imageCard}
                 onClick={() => setSelectedImage(receipt.signedUrl)}
               >
+                <button
+                  className={styles.deleteButton}
+                  onClick={(e) => handleDelete(receipt.id, e)}
+                  disabled={deletingId === receipt.id}
+                  aria-label="구매내역 삭제"
+                >
+                  {deletingId === receipt.id ? (
+                    <div className={styles.deleteSpinner} />
+                  ) : (
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      className={styles.deleteIcon}
+                    >
+                      <polyline points="3 6 5 6 21 6" strokeWidth="2" />
+                      <path
+                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                        strokeWidth="2"
+                      />
+                      <line x1="10" y1="11" x2="10" y2="17" strokeWidth="2" />
+                      <line x1="14" y1="11" x2="14" y2="17" strokeWidth="2" />
+                    </svg>
+                  )}
+                </button>
                 {receipt.signedUrl ? (
                   <img src={receipt.signedUrl} alt="구매내역" className={styles.receiptImage} />
                 ) : (
