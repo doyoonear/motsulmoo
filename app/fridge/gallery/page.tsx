@@ -44,6 +44,8 @@ export default function ReceiptImageGallery(props: ReceiptImageGalleryProps) {
     e.stopPropagation(); // 이미지 클릭 이벤트 방지
 
     if (!confirm('구매내역을 삭제하시겠습니까?')) {
+      // 취소 시 포커스 제거
+      (e.currentTarget as HTMLElement).blur();
       return;
     }
 

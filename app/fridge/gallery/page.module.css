@@ -75,9 +75,8 @@
   position: relative;
 }
 
-.imageCard:hover {
+.imageCard:hover, .imageCard:focus {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .deleteButton {
@@ -97,7 +96,7 @@
   z-index: 10;
 }
 
-.deleteButton:hover:not(:disabled) {
+.deleteButton:focus:not(:disabled) {
   background: rgba(66, 66, 66, 0.85);
   transform: scale(1.05);
 }
