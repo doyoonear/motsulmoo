@@ -15,19 +15,39 @@ export const COLORS = {
   DIMMED: 'rgba(0, 0, 0, 0.5)',
 } as const;
 
-// 재료 카테고리
-export const INGREDIENT_CATEGORIES = [
-  '채소류',
-  '육류',
-  '해산물',
-  '버섯류',
-  '달걀·가공단백류',
-  '곡물·면류',
-  '유제품',
-  '가공식품',
-  '조미료·양념류',
-  '기타·간식류',
-] as const;
+// 재료 카테고리 매핑 (단일 소스)
+export const CATEGORY_MAP = {
+  VEGETABLE: '채소류',
+  MEAT: '육류',
+  SEAFOOD: '해산물',
+  MUSHROOM: '버섯류',
+  EGG_PROTEIN: '달걀·가공단백류',
+  GRAIN_NOODLE: '곡물·면류',
+  DAIRY: '유제품',
+  PROCESSED: '가공식품',
+  SEASONING: '조미료·양념류',
+  SNACK_ETC: '기타·간식류',
+} as const;
+
+// ENUM 값 목록
+export const CATEGORY_TYPE = Object.keys(CATEGORY_MAP) as (keyof typeof CATEGORY_MAP)[];
+
+// 한글 라벨 목록
+export const CATEGORY_LABEL = Object.values(CATEGORY_MAP);
+
+// 한글 → ENUM 변환 함수
+export const getCategoryType = (label: string): string => {
+  const entry = Object.entries(CATEGORY_MAP).find(([_, value]) => value === label);
+  return entry ? entry[0] : label;
+};
+
+// ENUM → 한글 변환 함수
+export const getCategoryLabel = (type: string): string => {
+  return CATEGORY_MAP[type as keyof typeof CATEGORY_MAP] || type;
+};
+
+// 재료 카테고리 목록 (기존 호환성 유지)
+export const INGREDIENT_CATEGORIES = CATEGORY_LABEL;
 
 // 네비게이션 메뉴
 export const NAV_ITEMS = {
