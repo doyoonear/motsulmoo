@@ -97,7 +97,7 @@ export default function FridgePage() {
       formData.append('image', file);
 
       // API 호출
-      const response = await fetch('/api/analyze-ingredients', {
+      const response = await fetch('/api/analyze-purchase', {
         method: 'POST',
         body: formData,
       });
