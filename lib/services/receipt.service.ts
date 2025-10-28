@@ -35,13 +35,13 @@ export async function createPurchaseWithIngredients(
     throw new Error(`구매내역 저장 실패: ${receiptError?.message || 'Unknown error'}`);
   }
 
-  // 2. 재료 저장 (receiptId 연결)
+  // 2. 재료 저장 (purchaseReceiptId 연결)
   if (ingredients.length > 0) {
     const { error: itemsError } = await supabase
       .from('FridgeItem')
       .insert(
         ingredients.map((ingredient) => ({
-          receiptId: receipt.id,
+          purchaseReceiptId: receipt.id,
           name: ingredient.name,
           category: ingredient.category,
           amount: ingredient.amount,
