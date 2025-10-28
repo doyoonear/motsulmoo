@@ -2,36 +2,42 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import styles from './page.module.css';
 import BottomNavigation from '@/components/BottomNavigation';
 
-// Mock 데이터 - 실제로는 서버에서 가져온 이미지 목록
-const MOCK_RECEIPT_IMAGES = [
-  {
-    id: '1',
-    url: '/mock-receipt-1.jpg',
-    uploadedAt: new Date('2024-12-25'),
-  },
-  {
-    id: '2',
-    url: '/mock-receipt-2.jpg',
-    uploadedAt: new Date('2024-12-24'),
-  },
-  {
-    id: '3',
-    url: '/mock-receipt-3.jpg',
-    uploadedAt: new Date('2024-12-23'),
-  },
-];
+interface PurchaseReceipt {
+  id: string;
+  imageUrl: string;
+  signedUrl: string | null;
+  purchaseDate: string | null;
+  storeName: string | null;
+  createdAt: string;
+}
 
 interface ReceiptImageGalleryProps {}
 
 export default function ReceiptImageGallery(props: ReceiptImageGalleryProps) {
   const router = useRouter();
-  const [receiptImages, setReceiptImages] = useState(MOCK_RECEIPT_IMAGES);
+  const queryClient = useQueryClient();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+  // 구매내역 조회
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['purchase-receipts'],
+    queryFn: async () => {
+      const response = await fetch('/api/purchase-receipts');
+      if (!response.ok) {
+        throw new Error('구매내역 조회 실패');
+      }
+      const result = await response.json();
+      return result.receipts as PurchaseReceipt[];
+    },
+  });
+
+  const receiptImages = data || [];
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -57,13 +63,8 @@ export default function ReceiptImageGallery(props: ReceiptImageGalleryProps) {
       }
 
       if (data.success) {
-        // 이미지를 갤러리에 추가 (실제로는 서버에 저장)
-        const newImage = {
-          id: Date.now().toString(),
-          url: URL.createObjectURL(file),
-          uploadedAt: new Date(),
-        };
-        setReceiptImages([newImage, ...receiptImages]);
+        // Query 캐시 무효화하여 재조회
+        queryClient.invalidateQueries({ queryKey: ['purchase-receipts'] });
         alert('구매 내역이 업로드되고 냉장고에 재료가 추가되었습니다!');
         setShowUploadModal(false);
       } else {
@@ -96,7 +97,11 @@ export default function ReceiptImageGallery(props: ReceiptImageGalleryProps) {
         </div>
 
         <div className={styles.gallery}>
-          {receiptImages.length === 0 ? (
+          {isLoading ? (
+            <div className={styles.emptyState}>
+              <p className={styles.emptyText}>로딩 중...</p>
+            </div>
+          ) : receiptImages.length === 0 ? (
             <div className={styles.emptyState}>
               <p className={styles.emptyText}>업로드된 구매 내역이 없습니다</p>
               <button className={styles.emptyButton} onClick={() => setShowUploadModal(true)}>
@@ -104,17 +109,25 @@ export default function ReceiptImageGallery(props: ReceiptImageGalleryProps) {
               </button>
             </div>
           ) : (
-            receiptImages.map((image) => (
-              <div key={image.id} className={styles.imageCard} onClick={() => setSelectedImage(image.url)}>
-                <div className={styles.imagePlaceholder}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className={styles.placeholderIcon}>
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" strokeWidth="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" />
-                    <polyline points="21 15 16 10 5 21" strokeWidth="2" />
-                  </svg>
-                </div>
+            receiptImages.map((receipt) => (
+              <div
+                key={receipt.id}
+                className={styles.imageCard}
+                onClick={() => setSelectedImage(receipt.signedUrl)}
+              >
+                {receipt.signedUrl ? (
+                  <img src={receipt.signedUrl} alt="구매내역" className={styles.receiptImage} />
+                ) : (
+                  <div className={styles.imagePlaceholder}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className={styles.placeholderIcon}>
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" strokeWidth="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" />
+                      <polyline points="21 15 16 10 5 21" strokeWidth="2" />
+                    </svg>
+                  </div>
+                )}
                 <p className={styles.imageDate}>
-                  {image.uploadedAt.toLocaleDateString('ko-KR', {
+                  {new Date(receipt.createdAt).toLocaleDateString('ko-KR', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
@@ -173,13 +186,7 @@ export default function ReceiptImageGallery(props: ReceiptImageGalleryProps) {
               </svg>
             </button>
             <div className={styles.imageModalContent}>
-              <div className={styles.largeImagePlaceholder}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className={styles.largePlaceholderIcon}>
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" strokeWidth="2" />
-                  <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" />
-                  <polyline points="21 15 16 10 5 21" strokeWidth="2" />
-                </svg>
-              </div>
+              <img src={selectedImage} alt="구매내역 확대" className={styles.largeReceiptImage} />
             </div>
           </div>
         </>
