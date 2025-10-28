@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import type { AnalyzedIngredient } from './ingredient-analyzer.service';
-import { getCategoryType } from '@/constants';
+import { getCategoryType, getUnitType } from '@/constants';
 
 interface CreateReceiptParams {
   imageUrl: string;
@@ -46,7 +46,7 @@ export async function createPurchaseWithIngredients(
           name: ingredient.name,
           category: getCategoryType(ingredient.category),
           amount: ingredient.amount,
-          unit: ingredient.unit,
+          unit: getUnitType(ingredient.unit),
           purchasedAt: purchaseDate?.toISOString() || null,
         }))
       );

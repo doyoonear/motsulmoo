@@ -49,6 +49,29 @@ export const getCategoryLabel = (type: string): string => {
 // 재료 카테고리 목록 (기존 호환성 유지)
 export const INGREDIENT_CATEGORIES = CATEGORY_LABEL;
 
+// 재료 단위 매핑 (단일 소스)
+export const UNIT_MAP = {
+  G: 'g',
+  ML: 'ml',
+} as const;
+
+// ENUM 값 목록
+export const UNIT_TYPE = Object.keys(UNIT_MAP) as (keyof typeof UNIT_MAP)[];
+
+// 단위 라벨 목록
+export const UNIT_LABEL = Object.values(UNIT_MAP);
+
+// 단위 → ENUM 변환 함수
+export const getUnitType = (label: string): string => {
+  const entry = Object.entries(UNIT_MAP).find(([_, value]) => value === label);
+  return entry ? entry[0] : label;
+};
+
+// ENUM → 단위 변환 함수
+export const getUnitLabel = (type: string): string => {
+  return UNIT_MAP[type as keyof typeof UNIT_MAP] || type;
+};
+
 // 네비게이션 메뉴
 export const NAV_ITEMS = {
   FRIDGE: {
